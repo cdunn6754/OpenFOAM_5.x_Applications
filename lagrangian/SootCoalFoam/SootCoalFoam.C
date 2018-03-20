@@ -35,6 +35,7 @@ Description
 #include "basicThermoCloud.H"
 #include "coalCloud.H"
 #include "psiCombustionModel.H"
+//#include "sootPsiCombustionModel.H"
 #include "fvOptions.H"
 #include "radiationModel.H"
 #include "SLGThermo.H"

@@ -2,12 +2,12 @@
 
 Info<< "Creating combustion model\n" << endl;
 
-autoPtr<combustionModels::sootPsiCombustionModel> combustion
+autoPtr<combustionModels::psiCombustionModel> combustion
 (
-    combustionModels::sootPsiCombustionModel::New(mesh)
+    combustionModels::psiCombustionModel::New(mesh)
 );
 
-sootPsiReactionThermo& thermo = combustion->thermo();
+psiReactionThermo& thermo = combustion->thermo();
 
 thermo.validate(args.executable(), "h", "e");
 
@@ -295,8 +295,7 @@ volScalarField R_kronenburg_OH
 // Create the system for solving the soot
 EulerImplicitSystem sootSystem(thermo,composition,Ns,mesh,
 R_growth, R_oxidation_O2, R_oxidation_OH, 
-R_gasification_H2O, R_gasification_H2O, R_agglomeration,
-R_kronenburg_OH);
+R_gasification_H2O, R_gasification_H2O, R_agglomeration,R_kronenburg_OH);
 
 #include "createMRF.H"
 #include "createClouds.H"
