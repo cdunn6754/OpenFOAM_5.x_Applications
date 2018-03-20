@@ -2,12 +2,12 @@
 
 Info<< "Creating combustion model\n" << endl;
 
-autoPtr<combustionModels::psiCombustionModel> combustion
+autoPtr<combustionModels::sootPsiCombustionModel> combustion
 (
-    combustionModels::psiCombustionModel::New(mesh)
+    combustionModels::sootPsiCombustionModel::New(mesh)
 );
 
-psiReactionThermo& thermo = combustion->thermo();
+sootPsiReactionThermo& thermo = combustion->thermo();
 
 thermo.validate(args.executable(), "h", "e");
 
