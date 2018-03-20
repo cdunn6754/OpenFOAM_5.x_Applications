@@ -9,6 +9,19 @@ autoPtr<combustionModels::psiCombustionModel> combustion
 
 psiReactionThermo& thermo = combustion->thermo();
 
+// hePsiThermo<
+//     psiReactionThermo,
+//     specieMixture< reactingMixture< gasHThermoPhysics > >
+//     > *fullThermo = 
+//     dynamic_cast<
+//         hePsiThermo<
+//             psiReactionThermo,
+//             specieMixture<reactingMixture<gasHThermoPhysics > >
+//             > *> 
+//     thermo;
+
+                                       
+
 thermo.validate(args.executable(), "h", "e");
 
 SLGThermo slgThermo(mesh, thermo);
