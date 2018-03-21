@@ -9,18 +9,23 @@ autoPtr<combustionModels::psiCombustionModel> combustion
 
 psiReactionThermo& thermo = combustion->thermo();
 
-// hePsiThermo<
-//     psiReactionThermo,
-//     specieMixture< reactingMixture< gasHThermoPhysics > >
-//     > *fullThermo = 
-//     dynamic_cast<
-//         hePsiThermo<
-//             psiReactionThermo,
-//             specieMixture<reactingMixture<gasHThermoPhysics > >
-//             > *> 
-//     thermo;
+
+// Downcast thermo to fullThermo
+// changes type from psiReactionThermo to sootHePsiThermo
+// which enables us to use the functions in sootHePsiThermo
+sootHePsiThermo<
+    psiReactionThermo,
+    SpecieMixture< reactingMixture< gasHThermoPhysics > >
+    > &fullThermo = 
+    dynamic_cast<
+        sootHePsiThermo<
+            psiReactionThermo,
+            SpecieMixture<reactingMixture<gasHThermoPhysics > >
+            > &> 
+                                        (thermo);
 
                                        
+fullThermo.sootRho();
 
 thermo.validate(args.executable(), "h", "e");
 

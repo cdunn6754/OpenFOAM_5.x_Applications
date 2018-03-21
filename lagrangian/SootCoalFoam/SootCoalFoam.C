@@ -44,6 +44,12 @@ Description
 #include "localEulerDdtScheme.H"
 #include "fvcSmooth.H"
 
+// Needed for density fix
+#include "sootHePsiThermo.H"
+#include "SpecieMixture.H"
+#include "reactingMixture.H"
+#include "thermoPhysicsTypes.H"
+#include "psiReactionThermo.H" 
 
 #include "PcCoalCloud.H"
 #include "PcCoalParcel.H"
