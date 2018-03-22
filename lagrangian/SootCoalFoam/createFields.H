@@ -7,7 +7,7 @@ autoPtr<combustionModels::psiCombustionModel> combustion
     combustionModels::psiCombustionModel::New(mesh)
 );
 
-psiReactionThermo& thermo = combustion->thermo();
+psiReactionThermo& baseThermo = combustion->thermo();
 
 
 // Downcast thermo to fullThermo
@@ -16,17 +16,14 @@ psiReactionThermo& thermo = combustion->thermo();
 sootHePsiThermo<
     psiReactionThermo,
     SpecieMixture< reactingMixture< gasHThermoPhysics > >
-    > &fullThermo = 
+    > &thermo = 
     dynamic_cast<
         sootHePsiThermo<
             psiReactionThermo,
             SpecieMixture<reactingMixture<gasHThermoPhysics > >
             > &> 
-                                        (thermo);
-
+                                        (baseThermo);
                                        
-fullThermo.sootRho();
-
 thermo.validate(args.executable(), "h", "e");
 
 SLGThermo slgThermo(mesh, thermo);
