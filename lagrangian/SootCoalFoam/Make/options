@@ -1,6 +1,6 @@
 EXE_INC = \
 -I$(USER_LIB_SRC)/lagrangian/PcReactingMultiphase/lnInclude \
--I$(USER_LIB_SRC)/lagrangian/EulerImplicitSystem/lnInclude \
+-I$(USER_LIB_SRC)/lagrangian/TwoEquationSoot/lnInclude \
 -I$(USER_LIB_SRC)/thermophysicalModels/sootReactionThermo/lnInclude \
 -I$(USER_LIB_SRC)/thermophysicalModels/sootBasic/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
@@ -29,7 +29,7 @@ EXE_INC = \
 EXE_LIBS = \
 -L$(USER_LIB_LIBS) \
 -lPcReactingMultiphase \
--lEulerImplicitSystem \
+-lTwoEquationSoot \
 -lsootFluidThermophysicalModels \
 -lsootReactionThermophysicalModels \
     -lfiniteVolume \

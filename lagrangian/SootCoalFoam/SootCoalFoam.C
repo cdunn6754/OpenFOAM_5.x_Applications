@@ -35,7 +35,6 @@ Description
 #include "basicThermoCloud.H"
 #include "coalCloud.H"
 #include "psiCombustionModel.H"
-//#include "sootPsiCombustionModel.H"
 #include "fvOptions.H"
 #include "radiationModel.H"
 #include "SLGThermo.H"
@@ -54,7 +53,7 @@ Description
 #include "PcCoalCloud.H"
 #include "PcCoalParcel.H"
 // solver class for soot 2 equation model
-#include "EulerImplicitSystem.H"
+#include "TwoEquationSoot.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
