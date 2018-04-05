@@ -1,6 +1,6 @@
 EXE_INC = \
 -I$(USER_LIB_SRC)/lagrangian/PcReactingMultiphase/lnInclude \
--I$(USER_LIB_SRC)/lagrangian/TwoEquationSoot/lnInclude \
+-I$(USER_LIB_SRC)/sootModeling/TwoEquationSoot/lnInclude \
 -I$(USER_LIB_SRC)/thermophysicalModels/sootReactionThermo/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I${LIB_SRC}/meshTools/lnInclude \
