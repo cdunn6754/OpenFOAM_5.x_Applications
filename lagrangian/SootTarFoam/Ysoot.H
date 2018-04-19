@@ -13,6 +13,7 @@
             - fvm::laplacian(turbulence->muEff()/SSc, Ysoot)
             ==
             sootSystem.sourceY(Ysoot)
+            + tarSystem.sourceY(Ysoot)
             + coalParcels.SYi(i, Ysoot)
             + combustion->R(Ysoot)
             + fvOptions(rho, Ysoot)

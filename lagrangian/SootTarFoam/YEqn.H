@@ -13,6 +13,7 @@ tmp<fv::convectionScheme<scalar>> mvConvection
     Info <<"Correcting combustion " << endl;
     combustion->correct();
     sootSystem.updateSources();
+    tarSystem.updateSources();
     sootQdot = sootSystem.Qdot();
     Qdot = combustion->Qdot();
     label inertIndex = -1;
@@ -33,6 +34,7 @@ tmp<fv::convectionScheme<scalar>> mvConvection
                     coalParcels.SYi(i, Yi)
                     + combustion->R(Yi)
                     + sootSystem.sourceY(Yi)
+                    + tarSystem.sourceY(Yi)
                     + fvOptions(rho, Yi)
                 );
 

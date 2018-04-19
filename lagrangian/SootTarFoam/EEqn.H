@@ -20,6 +20,7 @@
         rho*(U&g)
         + Qdot
         + sootSystem.Qdot()
+        + tarSystem.Qdot()
         + coalParcels.Sh(he)
         + radiation->Sh(thermo,he)
         + fvOptions(rho, he)

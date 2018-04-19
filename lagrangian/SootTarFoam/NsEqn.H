@@ -7,7 +7,8 @@
     // - 6.232e26 [atoms/kmol]
     // - 12.0 [kg/kmol] molecular weight of carbon
     NsSource.primitiveFieldRef() 
-        = -coalParcels.SYi(i, Ysoot)->source() / mesh.V() * 
+        =  tarSystem.sourceY(Ysoot).ref().primitiveField()
+        * 
         (6.232e26/(9.0e4*12.01));
 
 
