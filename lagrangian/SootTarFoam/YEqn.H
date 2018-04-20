@@ -21,7 +21,12 @@ tmp<fv::convectionScheme<scalar>> mvConvection
 
     forAll(Y, i)
     {
-        if ((Y[i].name() != inertSpecie) && (Y[i].name() !="SOOT"))
+        if 
+            (
+                (Y[i].name() != inertSpecie) && 
+                (Y[i].name() !="SOOT") &&
+                (Y[i].name() != "TAR" )
+            )
         {
             volScalarField& Yi = Y[i];
 
@@ -49,15 +54,19 @@ tmp<fv::convectionScheme<scalar>> mvConvection
             Yi.max(0.0);
             Yt += Yi;
         }
-      else if (Y[i].name() == inertSpecie)
+        else if (Y[i].name() == inertSpecie)
         {
             inertIndex = i;
         }
-      else if (Y[i].name() == "SOOT")
+        else if (Y[i].name() == "SOOT")
 	{
-            #include "Ysoot.H"
+                #include "Ysoot.H"
 	}
-    }
+        else if (Y[i].name() == "TAR")
+        {
+                #include "Ytar.H"
+        }
+    } // end loop through species
 
     Y[inertIndex] = scalar(1) - Yt;
     Y[inertIndex].max(0.0);
