@@ -1,7 +1,6 @@
 EXE_INC = \
 -I$(USER_LIB_SRC)/lagrangian/PcReactingMultiphase/lnInclude \
 -I$(USER_LIB_SRC)/sootModeling/lnInclude \
--I$(USER_LIB_SRC)/sootModeling/SootTarModel/lnInclude \
 -I$(USER_LIB_SRC)/thermophysicalModels/sootReactionThermo/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I${LIB_SRC}/meshTools/lnInclude \
@@ -30,7 +29,6 @@ EXE_LIBS = \
 -L$(USER_LIB_LIBS) \
 -lPcReactingMultiphase \
 -lsootModeling \
--lSTM \
 -lsootReactionThermophysicalModels \
     -lfiniteVolume \
     -lmeshTools \
