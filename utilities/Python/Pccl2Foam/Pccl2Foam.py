@@ -10,7 +10,7 @@ Y_daf = 1 - Y_ash - Y_liq
 ### Inputs from PCCL all are given on daf basis
 # Relevant File name: "FDC1WT1.RPT"
 Y_char_daf = 0.402
-Y_gas_daf = 0.598
+Y_gas_daf = 0.598 #NOTE: sum both Ygas and Ytar from file
 
 ## dict of primary volatile species daf mass fraction
 # Only include species which are included in the combustion mechanism
@@ -42,11 +42,11 @@ sec_species = {
 ### **** END INPUTS **** ###
 
 
-### Fractions on non-daf basis
+### Convert Fractions to a non-daf basis
 ## Phase Fractions
 Y_char = Y_char_daf * Y_daf
 Y_solid = Y_char + Y_ash
-Y_gas = 1.0 - Y_solid - Y_liq
+Y_gas = 1.0 - Y_solid - Y_liq # includes tar too
 
 ## Solid Phase Fractions 
 ## (i.e. fraction of specie within the solid phase as in OpenFOAM dict)
@@ -59,11 +59,22 @@ Y_water_liq = 1.0
 ## Gas Phase Fractions 
 # here we make the assumption that Y_i_daf/Y_gas_daf = Y_i/Y_gas
 # which I think is pretty much true.
-Y_gas_sum = sum(Y_i_daf.values())
-for specie in Y_i_daf.keys():
-    old_mf = Y_i_daf[specie]
-    Y_i_daf[specie] = old_mf/Y_gas_sum
+# Note that tar fraction is preserved and the rest are normalized to 
+# account for missing species.
+gas_sum_unnormalized = sum([Y_i_daf[name] for name in Y_i_daf.keys() if name != "TAR"])
+Y_gas_no_tar = Y_gas - Y_i_daf["TAR"]
+for species in Y_i_daf.keys():
+    if species == "TAR":
+        continue
+    old_mf = Y_i_daf[species]
+    Y_i_daf[species] = (old_mf/gas_sum_unnormalized) * Y_gas_no_tar
 
+# Now we need to normalize the entire array to total 1.0
+# i.e. currently sum(Y_i_daf.values()) == Y_gas, but we want
+# sum(Y_i_daf.values()) == 1.0
+for species in Y_i_daf:
+    Y_i_daf[species] =Y_i_daf[species] / Y_gas
+    
 ### Report the phase fractions (gas, liquid, solid) (in OpenFOAM ready form)
 print("\nPhase Fractions:\n Gas: {:.3f}\n Liquid: {:.3f}\n Solid: {:.3f}\n".format(
     Y_gas, Y_liq, Y_solid))
