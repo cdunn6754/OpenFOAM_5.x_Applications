@@ -1,16 +1,19 @@
 # Convert some of the PCCL outputs to usable inputs in OpenFOAM cloud properties files.
 
+# Do we need to analyze the secondary breakdown products too?
+analyze_secondary_breakdown = False
+
 ### Inputs from proximate and ultimate analysis (not PCCL)
-Y_ash = 0.0586
-Y_liquid = 0.1691
+Y_ash = 0.0617
+Y_liquid = 0.268
 # assume the liquid is water, then find 
 # fraction that is daf
 Y_daf = 1.0 - Y_ash - Y_liquid
 
 ### Inputs from PCCL all are given on daf basis
 # Relevant File name: "FDC1WT1.RPT"
-Y_char_daf = 0.402
-Y_gas_daf = 0.598 #NOTE: sum both Ygas and Ytar from file
+Y_char_daf = 0.397
+Y_gas_daf = 1.0 - Y_char_daf #NOTE: sum both Ygas and Ytar from file
 
 ## dict of primary volatile species daf mass fraction
 # Only include species which are included in the combustion mechanism
@@ -18,26 +21,27 @@ Y_gas_daf = 0.598 #NOTE: sum both Ygas and Ytar from file
 # Relevant File names:
 #   "FDC1WT1.RPT","FDC1HC1.RPT", "FDC1NG1.RPT"
 Y_i_daf = {
-    "TAR":0.357,
-    "CO2":0.043,
-    "H2O":0.068,
-    "CO":0.023,
-    "H2":0.0001,
-    "CH4":0.035,
-    "C2H2":0.00,
-    "C2H6":0.0021
+    "TAR":0.298,
+    "CO2":0.074,
+    "H2O":0.077,
+    "CO":0.069,
+    "H2":0.0066,
+    "CH4":0.041,
+    "C2H4":0.0164,
+    "C2H6":0.0153  #Added C3H6 and C2H6 together
 }
 
-## Secondary Tar Breakdown
-# Relevant File Name: "SFTRC1T1.RPT"
-sec_species = {
-    "SOOT":.748,
-    "C2H2":.322e-1,
-    "H2":.470e-1,
-    "CO":.146,
-    "H2O":.566e-3,
-    "CO2":.365e-2
-}
+if analyze_secondary_breakdown:
+    ## Secondary Tar Breakdown
+    # Relevant File Name: "SFTRC1T1.RPT"
+    sec_species = {
+        "SOOT":.748,
+        "C2H2":.322e-1,
+        "H2":.470e-1,
+        "CO":.146,
+        "H2O":.566e-3,
+        "CO2":.365e-2
+    }
 
 ### **** END INPUTS **** ###
 
@@ -45,10 +49,6 @@ sec_species = {
 
 ### Convert Fractions to a non-daf basis
 ## Phase Fractions
-# Y_char = Y_char_daf * Y_daf
-# Y_solid = Y_char + Y_ash
-# Y_gas = 1.0 - Y_solid - Y_liq # includes tar too
-
 Y_gas = Y_gas_daf * Y_daf # includes tar too
 Y_char = 1.0 - Y_gas - Y_liquid - Y_ash
 Y_solid = Y_char + Y_ash
@@ -75,7 +75,7 @@ for species in Y_i_daf.keys():
         continue
     old_mf = Y_i_daf[species]
     Y_i_daf[species] = ( (old_mf/gas_sum_no_tar)  
-                         * (Y_gas_daf - Y_i_daf["TAR"]) )
+                         * (Y_gas_daf - Y_i_daf["TAR"]))
 
 # Species fractions of gas, not daf
 Y_i_gas = {}
@@ -93,10 +93,10 @@ for species in Y_i_daf:
 
 ### Report the mass fraction that is DAF
 print("\nDAF mass fraction: \n Y_daf: {}".format(Y_daf))
+
 ### Report the phase fractions (gas, liquid, solid) (in OpenFOAM ready form)
 print("\nPhase Fractions:\n Gas: {:.3f}\n Liquid: {:.3f}\n Solid: {:.3f}".format(
     Y_gas, Y_liquid, Y_solid))
-
 
 ### Report the fractions within each phase (in OpenFOAM ready form)
 print("\nGas Fractions:")
@@ -113,14 +113,15 @@ print(" Char: {:.3f}".format(Y_char_solid))
 print(" Ash: {:.3f}".format(Y_ash_solid))
       
 
-### Normalize and Report Secondary Tar products ratios (in OpenFOAM ready form)
-print("\nSecondary Devolatilization:")
-for specieName in sec_species.keys():
-    Yspecie = sec_species[specieName]
+if analyze_secondary_breakdown:
+    ### Normalize and Report Secondary Tar products ratios (in OpenFOAM ready form)
+    print("\nSecondary Devolatilization:")
+    for specieName in sec_species.keys():
+        Yspecie = sec_species[specieName]
     
-    sec_species[specieName] = Yspecie/sum(sec_species.values())
-    print(" {}: {:.3f}".format(
-        specieName, sec_species[specieName]))
+        sec_species[specieName] = Yspecie/sum(sec_species.values())
+        print(" {}: {:.3f}".format(
+            specieName, sec_species[specieName]))
 
 print("\n\n")
 
