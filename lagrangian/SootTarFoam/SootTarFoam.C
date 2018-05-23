@@ -50,8 +50,6 @@ Description
 #include "thermoPhysicsTypes.H"
 #include "psiReactionThermo.H" 
 
-#include "PcCoalCloud.H"
-#include "PcCoalParcel.H"
 // solver class for soot 2 equation model
 #include "TwoEquationSoot.H"
 // And tar model

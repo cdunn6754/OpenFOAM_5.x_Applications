@@ -1,5 +1,4 @@
 EXE_INC = \
--I$(USER_LIB_SRC)/lagrangian/PcReactingMultiphase/lnInclude \
 -I$(USER_LIB_SRC)/sootModeling/lnInclude \
 -I$(USER_LIB_SRC)/thermophysicalModels/sootReactionThermo/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
@@ -27,7 +26,6 @@ EXE_INC = \
     -I$(LIB_SRC)/sampling/lnInclude
 EXE_LIBS = \
 -L$(USER_LIB_LIBS) \
--lPcReactingMultiphase \
 -lsootModeling \
 -lsootReactionThermophysicalModels \
     -lfiniteVolume \
