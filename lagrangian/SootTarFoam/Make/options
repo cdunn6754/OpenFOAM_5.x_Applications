@@ -1,5 +1,6 @@
 EXE_INC = \
 -I$(USER_LIB_SRC)/sootModeling/lnInclude \
+-I$(USER_LIB_SRC)/PcSforDevolatilization/lnInclude \
 -I$(USER_LIB_SRC)/thermophysicalModels/sootReactionThermo/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I${LIB_SRC}/meshTools/lnInclude \
@@ -28,6 +29,7 @@ EXE_LIBS = \
 -L$(USER_LIB_LIBS) \
 -lsootModeling \
 -lsootReactionThermophysicalModels \
+-lPcSforDevolatilization \
     -lfiniteVolume \
     -lmeshTools \
     -lturbulenceModels \
