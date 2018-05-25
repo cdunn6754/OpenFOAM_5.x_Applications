@@ -310,7 +310,7 @@ volScalarField R_kronenburg_OH
 // Create the system for solving the soot
 TwoEquationSoot sootSystem(thermo,composition,Ns,mesh,
 R_growth, R_oxidation_O2, R_oxidation_OH, 
-R_gasification_H2O, R_gasification_H2O, R_agglomeration,R_kronenburg_OH);
+R_gasification_H2O, R_gasification_CO2, R_agglomeration,R_kronenburg_OH);
 
 SootTarModel tarSystem(thermo, composition, Ns, mesh);
 
