@@ -1,4 +1,11 @@
-# Convert some of the PCCL outputs to usable inputs in OpenFOAM cloud properties files.
+'''
+Convert some of the PCCL outputs to usable inputs in OpenFOAM cloud properties files.
+
+06-01-18
+Python 3.6.1
+'''
+
+### User Inputs
 
 # Do we need to analyze the secondary breakdown products too?
 analyze_secondary_breakdown = False
@@ -13,11 +20,13 @@ Y_daf = 1.0 - Y_ash - Y_liquid
 ### Inputs from PCCL all are given on daf basis
 # Relevant File name: "FDC1WT1.RPT"
 Y_char_daf = 0.397
-Y_gas_daf = 1.0 - Y_char_daf #NOTE: sum both Ygas and Ytar from file
+Y_gas_daf = 1.0 - Y_char_daf #NOTE: sum of both Ygas and Ytar from file
 
 ## dict of primary volatile species daf mass fraction
 # Only include species which are included in the combustion mechanism
 # Don't worry if they dont sum to one we will renormalize later
+# In this example I have lumped all C2 and C3 HC in the C2 species we
+# can handle, that is recommended.
 # Relevant File names:
 #   "FDC1WT1.RPT","FDC1HC1.RPT", "FDC1NG1.RPT"
 Y_i_daf = {
@@ -28,14 +37,14 @@ Y_i_daf = {
     "H2":0.0066,
     "CH4":0.041,
     "C2H4":0.0164,
-    "C2H6":0.0153  #Added C3H6 and C2H6 together
+    "C2H6":0.0153   ##Added C3H6 and C2H6 together
 }
 
 if analyze_secondary_breakdown:
     ## Secondary Tar Breakdown
     # Relevant File Name: "SFTRC1T1.RPT"
     sec_species = {
-        "SOOT":.748,
+        "SOOT":.748, ## If necessary be sure to add Oil and PAH fraction here
         "C2H2":.322e-1,
         "H2":.470e-1,
         "CO":.146,
@@ -44,6 +53,7 @@ if analyze_secondary_breakdown:
     }
 
 ### **** END INPUTS **** ###
+
 
 
 
@@ -88,7 +98,6 @@ for species in Y_i_daf:
 
 ### END Analysis
     
-
 
 
 ### Report the mass fraction that is DAF
