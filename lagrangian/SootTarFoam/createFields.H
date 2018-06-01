@@ -208,7 +208,7 @@ volScalarField NsSource
     dimensionedScalar("NsSource", dimensionSet(0,-3,-1, 0,0),0.0)
 );
 
-// Rate fields
+// Soot Rate Fields
 volScalarField R_oxidation_O2
 (
     IOobject
@@ -307,12 +307,77 @@ volScalarField R_kronenburg_OH
     dimensionedScalar("R_Kronenburg_OH", dimensionSet(0,-3,-1, 0,1),0.0)
 );
 
+// Tar Rate fields
+volScalarField R_oxidation
+(
+    IOobject
+    (
+        "R_ox_tar",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("R_ox_O2", dimensionSet(0,-3,-1, 0,1),0.0)
+);
+
+volScalarField R_cracking
+(
+    IOobject
+    (
+        "R_cr_tar",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("R_ox_O2", dimensionSet(0,-3,-1, 0,1),0.0)
+);
+
+volScalarField R_sootFormation
+(
+    IOobject
+    (
+        "R_sf_tar",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("R_ox_O2", dimensionSet(0,-3,-1, 0,1),0.0)
+);
+
+
+// Debugging field for substeps taken
+volScalarField subStepsTaken
+(
+    IOobject
+    (
+        "subStep",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("R_ox_O2", dimensionSet(0,0,0, 0,0),0.0)
+);
+
+
+
 // Create the system for solving the soot
 TwoEquationSoot sootSystem(thermo,composition,Ns,mesh,
 R_growth, R_oxidation_O2, R_oxidation_OH, 
 R_gasification_H2O, R_gasification_CO2, R_agglomeration,R_kronenburg_OH);
 
-SootTarModel tarSystem(thermo, composition, Ns, mesh);
+SootTarModel tarSystem(thermo, composition, Ns, mesh,
+R_oxidation,
+R_cracking,
+R_sootFormation,
+subStepsTaken.primitiveFieldRef());
 
 #include "createMRF.H"
 #include "createClouds.H"
