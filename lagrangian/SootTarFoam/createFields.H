@@ -367,6 +367,24 @@ volScalarField subStepsTaken
 );
 
 
+// Field to record sootFlux vector
+volVectorField sootFlux
+(
+    IOobject
+    (
+        "sootFlux",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedVector("dummy", dimensionSet(1,-2,-1,0,0), vector(0.0,0.0,0.0))
+);
+
+// Will need the soot index to grab the field at every timestep
+const label sootIdx = composition.species()["SOOT"];
+
 
 // Create the system for solving the soot
 TwoEquationSoot sootSystem(thermo,composition,Ns,mesh,

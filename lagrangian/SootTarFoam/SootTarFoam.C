@@ -131,6 +131,9 @@ int main(int argc, char *argv[])
 
         rho = thermo.rho();
 
+        // Grab the soot flux before writeout
+        sootFlux = rho * U * Y[sootIdx];
+
         runTime.write();
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
