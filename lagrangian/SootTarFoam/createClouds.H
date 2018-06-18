@@ -29,7 +29,12 @@ IOdictionary coalCloudProperties
 const word devolatilizationModel = 
          coalCloudProperties.subDict("subModels").lookup("devolatilisationModel");
 
-if (devolatilizationModel != "analyticalSFORDevolatilization")
+if 
+(
+    devolatilizationModel != "analyticalSFORDevolatilization"
+    &&
+    devolatilizationModel != "nthOrderDevolatilisation"
+)
 {
     FatalErrorInFunction << "You are using the " << devolatilizationModel
         << " model. Use the analyticalSFORDevolatilization model instead." 
